@@ -1,0 +1,71 @@
+{
+  "execution": "只读沙箱；每条argv在独立新Python进程、独立内存源码副本执行，未写入工作区，未依赖前一命令副作用。",
+  "python": "3.9.6",
+  "commands": [
+    {
+      "argv": ["python3", "checks.py", "baseline"],
+      "exit_code": 0,
+      "result": {"correct": true, "suite": "baseline"}
+    },
+    {
+      "argv": ["python3", "bench.py", "baseline"],
+      "exit_code": 0,
+      "result": {
+        "batches_per_round": 3,
+        "changes_per_batch": 20,
+        "fixture_seconds": 0.130310042,
+        "records": 200000,
+        "rounds": 3,
+        "workloads": {
+          "boundary": {
+            "candidate": [
+              {"init_seconds": 0.10688970899999717, "response_bytes": 94890474, "work_seconds": 1.6641570409999993},
+              {"init_seconds": 0.11044462499999952, "response_bytes": 94890474, "work_seconds": 1.5810294999999996},
+              {"init_seconds": 0.10456312499999854, "response_bytes": 94890474, "work_seconds": 1.6829030000000031}
+            ],
+            "median_time_ratio": 1.034147146346954,
+            "reference": [
+              {"init_seconds": 0.1095079160000001, "response_bytes": 94890474, "work_seconds": 1.5990911249999993},
+              {"init_seconds": 0.1031317499999993, "response_bytes": 94890474, "work_seconds": 1.6092072069999972},
+              {"init_seconds": 0.10864945899999867, "response_bytes": 94890474, "work_seconds": 1.6094177909999985}
+            ],
+            "round_byte_ratios": [1.0, 1.0, 1.0]
+          },
+          "spread": {
+            "candidate": [
+              {"init_seconds": 0.10540933299999988, "response_bytes": 94892910, "work_seconds": 1.9748964159999995},
+              {"init_seconds": 0.10766987500000003, "response_bytes": 94892910, "work_seconds": 1.6377932920000013},
+              {"init_seconds": 0.10238329200000074, "response_bytes": 94892910, "work_seconds": 1.6256921240000004}
+            ],
+            "median_time_ratio": 1.0142460312761201,
+            "reference": [
+              {"init_seconds": 0.10393854200000002, "response_bytes": 94892910, "work_seconds": 1.6147889579999999},
+              {"init_seconds": 0.10309191599999945, "response_bytes": 94892910, "work_seconds": 1.615192917},
+              {"init_seconds": 0.10814091700000006, "response_bytes": 94892910, "work_seconds": 1.5977582090000002}
+            ],
+            "round_byte_ratios": [1.0, 1.0, 1.0]
+          }
+        }
+      }
+    },
+    {
+      "argv": ["python3", "checks.py", "demo"],
+      "exit_code": 0,
+      "result": {
+        "differences": [
+          ["a", "6e6577", "6f6c64"],
+          ["aa", "73616d65", null],
+          ["ab", null, "6164646564"],
+          ["水位", null, "3132"]
+        ],
+        "encoding": "hex"
+      }
+    }
+  ],
+  "frozen_budgets": {
+    "median_work_time_ratio": 0.25,
+    "each_round_response_byte_ratio": 0.01
+  },
+  "interpretation": "基线结果正确、性能与载荷比约为1，尚未达优化预算；未实现或运行目标答案。耗时为本次实测，后续验收使用同进程冻结参照比值，不使用这些绝对秒数作为门槛。",
+  "source_note": "正确性回归最后增加了映射所有权与空批检查并重新通过；基准之后生产实现、计量、负载及其依赖的参照函数未改变。系统启动器尝试建立临时缓存被沙箱拒绝，解释器和业务命令仍以0退出。"
+}
